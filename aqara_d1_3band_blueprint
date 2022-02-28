@@ -1,0 +1,183 @@
+blueprint:
+  name: Z2M - Aqara D1 Switch 3 bands
+  description: "Control anything you want with Aqara D1 Switch 3 bands.
+    Each band button has single, double, triple, hold & release"
+  domain: automation
+  input:
+    switch:
+      name: Aqara D1 Switch
+      description: Aqara D1 switch to use
+      selector:
+        entity:
+          domain: sensor
+          integration: mqtt
+
+## LEFT BUTTON ##
+
+    left_single:
+      name: Left button - single click
+      description: Action to run on single click of left button
+      default: []
+      selector:
+        action: {}
+    left_double:
+      name: Left button - double click
+      description: Action to run on double click of left button
+      default: []
+      selector:
+        action: {}
+
+## Center BUTTON ##
+
+    center_single:
+      name: Center button - single click
+      description: Action to run on single click of Center button
+      default: []
+      selector:
+        action: {}
+    center_double:
+      name: Center button - double click
+      description: Action to run on double click of Center button
+      default: []
+      selector:
+        action: {}
+
+## Right BUTTON ##
+
+    right_single:
+      name: Right button - single click
+      description: Action to run on single click of right button
+      default: []
+      selector:
+        action: {}
+    right_double:
+      name: Right button - double click
+      description: Action to run on double click of right button
+      default: []
+      selector:
+        action: {}
+
+## Combinations ##
+
+    left_right_single:
+      name: Left & Right buttons - single click
+      description: Action to run on single click of left & right buttons
+      default: []
+      selector:
+        action: {}
+    
+    left_right_double:
+      name: Left & Right buttons - double click
+      description: Action to run on double click of left & right buttons
+      default: []
+      selector:
+        action: {}
+
+    left_center_single:
+      name: Left & center buttons - single click
+      description: Action to run on single click of left & center buttons
+      default: []
+      selector:
+        action: {}
+    left_center_double:
+      name: Left & center buttons - double click
+      description: Action to run on double click of left & center buttons
+      default: []
+      selector:
+        action: {}
+
+    right_center_single:
+      name: Right & Center buttons - single click
+      description: Action to run on single click of right & center buttons
+      default: []
+      selector:
+        action: {}
+    right_center_double:
+      name: Right & Center buttons - double click
+      description: Action to run on double click of right & center buttons
+      default: []
+      selector:
+        action: {}
+    
+    all_single:
+      name: All buttons - single click
+      description: Action to run on single click of all buttons
+      default: []
+      selector:
+        action: {}
+
+    all_double:
+      name: All buttons - double click
+      description: Action to run on double click of all buttons
+      default: []
+      selector:
+        action: {}
+
+
+mode: restart
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input "switch"
+    attribute: action
+action:
+  - variables:
+      command: "{{ trigger.to_state.state }}"
+  - choose:
+
+## Left button ##
+
+      - conditions:
+          - "{{ command == 'single_left' }}"
+        sequence: !input "left_single"
+      - conditions:
+          - "{{ command == 'double_left' }}"
+        sequence: !input "left_double"
+
+## Center Button ##
+
+      - conditions:
+          - "{{ command == 'single_center' }}"
+        sequence: !input "center_single"
+      - conditions:
+          - "{{ command == 'double_center' }}"
+        sequence: !input "center_double"
+
+## Right Button ##
+
+      - conditions:
+          - "{{ command == 'single_right' }}"
+        sequence: !input "right_single"
+      - conditions:
+          - "{{ command == 'double_right' }}"
+        sequence: !input "right_double"
+
+## Combinations ##
+
+      - conditions:
+          - "{{ command == 'single_left_right' }}"
+        sequence: !input "left_right_single"
+      - conditions:
+          - "{{ command == 'double_left_right' }}"
+        sequence: !input "left_right_double"
+
+      - conditions:
+          - "{{ command == 'single_left_center' }}"
+        sequence: !input "left_center_single"
+      - conditions:
+          - "{{ command == 'double_left_center' }}"
+        sequence: !input "left_center_double"
+
+      - conditions:
+          - "{{ command == 'single_center_right' }}"
+        sequence: !input "right_center_single"
+      - conditions:
+          - "{{ command == 'double_center_right' }}"
+        sequence: !input "right_center_double"
+
+      - conditions:
+          - "{{ command == 'single_all' }}"
+        sequence: !input "all_single"
+      - conditions:
+          - "{{ command == 'double_all' }}"
+        sequence: !input "all_double"
